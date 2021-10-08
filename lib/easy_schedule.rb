@@ -1,4 +1,6 @@
+require 'date'
 require_relative "./Classes/Event"
+require_relative "./helper"
 
 if ARGV.length <= 0
     puts <<-ARGS_ERROR_MESSAGE
@@ -11,15 +13,21 @@ if ARGV.length <= 0
     ARGS_ERROR_MESSAGE
 end
 
-
+events = []
 case ARGV[0]
 when "create"
     puts "creating event"
 when "viewa"
     puts "viewing event"
 when "viewm"
-    puts "viewing month"
+    if ARGV.length==2
+        month = DateTime.parse(ARGV[1])
+        show_month(month)
+    else
+        puts "Invalid Args:\nPlease follow the syntax \"easy_schedule \"viewm\" \"Jan 2021\"\""
+    end
 when "edelete"
     puts "deleting"
-else "invalid command"
+else 
+    puts ARGV.length, "invalid command"
 end
