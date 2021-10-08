@@ -16,9 +16,22 @@ end
 events = []
 case ARGV[0]
 when "create"
-    puts "creating event"
+    if ARGV.length == 4
+        event_date_time = validate_create_cmd_date_time(ARGV[3])
+        events << Event.new(
+                    ARGV[1],
+                    ARGV[2],
+                    event_date_time.strftime("%H:%M"),
+                    event_date_time.day,
+                    event_date_time.year,
+                    event_date_time.cwday,
+                    event_date_time.month)
+        puts "Event added successfully"
+    else
+        puts "Invalid Args:\nPlease follow the syntax \"easy_schedule \"create\" \"title\" \"description\" \"3 Jan 2021 04:04 AM\"\""
+    end
 when "viewa"
-    puts "viewing event"
+    view_events(events)
 when "viewm"
     if ARGV.length==2
         month = DateTime.parse(ARGV[1])
