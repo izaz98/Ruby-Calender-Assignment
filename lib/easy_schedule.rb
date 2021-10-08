@@ -2,50 +2,65 @@ require 'date'
 require_relative "./Classes/Event"
 require_relative "./helper"
 
-if ARGV.length <= 0
-    puts <<-ARGS_ERROR_MESSAGE
+def get_messages
+    <<-MESSAGE
     Please enter the following commands to deal with events:
-        1. create "title" "description" "3 Jan 2021 04:04 AM"
-        2. viewa
-        3. viewm "Janurary 2021" (view specific month)
-        4. edelete "Janurary 2021"
-        5. edelete "2 Janurary 2021"       
-    ARGS_ERROR_MESSAGE
+        Press 1 to create event
+        Press 2 to view all events
+        Press 3 month view of a specific month
+        Press 4 to edit an event
+        Press 5 to delete an event 
+        Press q to quit\n
+        Enter Your Choice:
+MESSAGE
 end
 
+
 events = []
-case ARGV[0]
-when "create"
-    if ARGV.length == 4
-        event_date_time = validate_create_cmd_date_time(ARGV[3])
+while true
+    print get_messages
+    choice = gets.chop
+    case choice
+    when "1"
+        title, description, time = input_event_details
         events << Event.new(
-                    ARGV[1],
-                    ARGV[2],
-                    event_date_time.strftime("%H:%M"),
-                    event_date_time.day,
-                    event_date_time.year,
-                    event_date_time.cwday,
-                    event_date_time.month)
-        puts "Event added successfully"
-    else
-        puts "Invalid Args:\nPlease follow the syntax \"easy_schedule \"create\" \"title\" \"description\" \"3 Jan 2021 04:04 AM\"\""
-    end
-when "viewa"
-    if ARGV.length == 1
+                    title,
+                    description,
+                    time.strftime("%H:%M"),
+                    time.day,
+                    time.year,
+                    time.cwday,
+                    time.month)
+        puts "\n Events Added Successfully"
+
+    when "2" 
         view_events(events)
-    else
-        puts "Invalid Args:\nPlease follow the syntax \"easy_schedule \"viewa\""
-    end
-when "viewm"
-    if ARGV.length==2
-        month = Date.parse(ARGV[1])
+    when "3"
+        print "Enter month (Jan 2021): "
+        month_to_print = gets.chop
+
+        month = Date.parse(month_to_print)
         month = Date.new(month.year, month.month)
         show_month(month)
-    else
-        puts "Invalid Args:\nPlease follow the syntax \"easy_schedule \"viewm\" \"Jan 2021\"\""
+    when "4"
+        puts "Editing"
+    when "5"
+        events.each.with_index {|event, index| puts "#{index}- #{event}"}
+
+        print "Enter Index to delete: "
+        while true
+            index = Integer(gets.chop)
+            break if index <= events.length
+            print "Invalid Index! Please Enter a valid Index: "
+        end
+
+        events.delete_at(index)
+            
+        puts "Deleted Event"
+    when "q"
+        puts "Exiting Event Handler"
+        break
+    else 
+        puts "invalid input"
     end
-when "edelete"
-    puts "deleting"
-else 
-    puts ARGV.length, "invalid command"
 end

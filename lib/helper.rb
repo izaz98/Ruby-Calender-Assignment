@@ -1,4 +1,6 @@
-def validate_create_cmd_date_time(time)
+## add them to module
+
+def validate_date_time(time)
     
     begin
         DateTime.parse(time)
@@ -25,4 +27,17 @@ def view_events(events)
     else
         puts events
     end
+end
+
+def input_event_details
+    print "Enter Title: "
+    title = gets.chop
+    print "Enter Description: "
+    description = gets.chop
+    print "Enter Time in format (3 Jan 2021 4:00 AM): "
+    time = gets.chop
+
+    time = validate_date_time(time)
+
+    return title, description, time
 end
