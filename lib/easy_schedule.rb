@@ -31,10 +31,15 @@ when "create"
         puts "Invalid Args:\nPlease follow the syntax \"easy_schedule \"create\" \"title\" \"description\" \"3 Jan 2021 04:04 AM\"\""
     end
 when "viewa"
-    view_events(events)
+    if ARGV.length == 1
+        view_events(events)
+    else
+        puts "Invalid Args:\nPlease follow the syntax \"easy_schedule \"viewa\""
+    end
 when "viewm"
     if ARGV.length==2
-        month = DateTime.parse(ARGV[1])
+        month = Date.parse(ARGV[1])
+        month = Date.new(month.year, month.month)
         show_month(month)
     else
         puts "Invalid Args:\nPlease follow the syntax \"easy_schedule \"viewm\" \"Jan 2021\"\""
