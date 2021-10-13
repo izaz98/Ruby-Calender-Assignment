@@ -5,10 +5,10 @@ require_relative '../model/event'
 
 # This module contains the helper functions
 module Helper
-  def validate_date_time(event_date_time)
-    DateTime.parse(event_date_time)
+  def validate_date_time(event_date_time_str, format, error_message)
+    DateTime.strptime(event_date_time_str, format)
   rescue ArgumentError
-    puts 'Please enter the time in correct order \"3 Jan 2021 04:04 AM\"'
+    print "#{error_message}: "
   end
 
   def add_event(user, title, description, event_date_time, index = nil)
@@ -40,8 +40,14 @@ module Helper
     print 'Enter Date Time in format (3 Jan 2021 4:00 AM): '
     event_date_time = gets.chop
 
-    event_date_time = validate_date_time(event_date_time)
+    error_message = 'Please enter the time in correct order \"3 Jan 2021 04:04 AM\"'
 
+    loop do
+      event_date_time = validate_date_time(event_date_time, '%d %b %Y %I:%M %p', error_message)
+      break if event_date_time
+
+      event_date_time = gets.chop
+    end
     [title, description, event_date_time]
   end
 

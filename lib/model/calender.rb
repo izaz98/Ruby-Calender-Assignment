@@ -30,16 +30,15 @@ class Calender
     @events.delete_at(index)
   end
 
-  def view_specific_month(month)
-    date = DateTime.parse(month)
+  def view_specific_month(date_time)
     month_view_header = "M\tT\tW\tT\tF\tS\tS"
-    month_start_day = date.cwday
-    num_of_days = DateTime.new(date.year, date.month, -1).day
+    month_start_day = date_time.cwday
+    num_of_days = DateTime.new(date_time.year, date_time.month, -1).day
     print month_view_header, "\n", "\t" * (month_start_day - 1)
-    1.upto(num_of_days) do |num|
-      spaces = (month_start_day % 7).zero? || num == num_of_days ? "\n" : "\t"
-      events_on_date = num_of_events_on_date(DateTime.new(date.year, date.month, num))
-      print num, "#{events_on_date.positive? ? "(#{events_on_date})" : ''}", spaces
+    1.upto(num_of_days) do |date|
+      spaces = (month_start_day % 7).zero? || date == num_of_days ? "\n" : "\t"
+      events_on_date = num_of_events_on_date(DateTime.new(date_time.year, date_time.month, date))
+      print date, "#{events_on_date.positive? ? "(#{events_on_date})" : ''}", spaces
       month_start_day += 1
     end
   end

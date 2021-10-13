@@ -33,12 +33,19 @@ class View
         add_event(user, title, description, event_date_time)
 
         puts "\n Events Added Successfully"
-
       when '2'
         view_events(user)
       when '3'
         print 'Enter month (Jan 2021): '
         month_to_print = gets.chop
+        error_message = 'Please enter Month in format eg: Jan 2021'
+
+        loop do
+          month_to_print = validate_date_time(month_to_print, '%b %Y', error_message)
+          break if month_to_print
+
+          month_to_print = gets.chop
+        end
 
         show_month(user, month_to_print)
       when '4'
