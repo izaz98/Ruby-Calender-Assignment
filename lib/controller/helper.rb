@@ -51,12 +51,20 @@ module Helper
     [title, description, event_date_time]
   end
 
+  def int?(str)
+    !!Integer(str)
+  rescue ArgumentError, TypeError
+    false
+  end
+
   def validate_index_input(is_edit: false, events_count: 0)
     print "Enter Index to #{is_edit ? 'edit: ' : 'delete: '}"
     while true
-      index = Integer(gets.chop)
-      break if index.positive? && index <= events_count
-
+      num_str = gets.chop
+      if int?(num_str)
+        index = Integer(num_str)
+        break if index.positive? && index <= events_count
+      end
       print 'Invalid Index! Please Enter a valid Index: '
     end
 
